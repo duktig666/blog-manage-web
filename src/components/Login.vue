@@ -14,22 +14,23 @@
                                 <v-form
                                         ref="form"
                                         v-model="valid"
-                                        lazy-validation>
-                                    <v-text-field prepend-icon="person"  v-model="username" label="用户名" type="text"/>
+                                        lazy-validation
+                                >
+                                    <v-text-field prepend-icon="fa-user"  v-model="username" label="用户名" type="text"/>
                                     <v-text-field
                                             ref="password"
-                                            prepend-icon="lock"
+                                            prepend-icon="fa-lock"
                                             v-model="password"
                                             label="密码"
                                             id="password"
                                             :append-icon="e1 ? 'visibility' : 'visibility_off'"
-                                            :append-icon-cb="() => (e1 = !e1)"
                                             :type="e1 ? 'text' : 'password'"
+                                            @click:append="e1 = !e1"
                                     ></v-text-field>
                                         <v-row no-gutters>
                                             <v-col cols="8">
                                                 <v-text-field
-                                                    prepend-icon="code"
+                                                    prepend-icon="fas fa-check-square"
                                                     v-model="code"
                                                     label="验证码"
                                                     type="text">
