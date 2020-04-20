@@ -1,6 +1,5 @@
 <template>
     <v-app>
-        测试
         <v-content>
             <v-form v-model="valid">
                 <v-container>

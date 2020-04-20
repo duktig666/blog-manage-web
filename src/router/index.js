@@ -9,18 +9,10 @@ Vue.use(Router);
 
 export default new Router({
     routes: [
-        {
-            path: '/',
-            redirect: '/',
-            name: "helloWorld",
-            component: HelloWorld
-        },
-        {
-            path: '/',
-            redirect: '/Login',
-            name: "login",
-            component: Login
-        }
+        // 默认路径
+        {path:'/',redirect:'/login'},
+        {path: '/helloWorld',name: 'HelloWorld', component: HelloWorld,children:[]},
+        {path: '/login', name: "login", component: Login},
     ]
 })
 
