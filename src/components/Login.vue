@@ -6,17 +6,24 @@
                     <v-flex xs12 sm8 md4>
                         <v-card class="elevation-12">
                             <v-toolbar dark color="primary">
-                                <v-toolbar-titletitle>个人博客后台管理</v-toolbar-titletitle>
-                                <v-spacer></v-spacer>
+                                <v-toolbar-title>个人博客后台管理</v-toolbar-title>
+                                <v-spacer/>
                             </v-toolbar>
                             <v-card-text>
                                 <!-- 表单   -->
                                 <v-form
                                         ref="form"
-                                        v-model="valid"
                                         lazy-validation
+                                        v-model="valid"
                                 >
-                                    <v-text-field prepend-icon="fa-user"  v-model="username" label="用户名" type="text"/>
+                                    <v-text-field
+                                            prepend-icon="fa-user"
+                                            v-model="username"
+                                            label="用户名"
+                                            type="text"
+                                            :rules="nameRules"
+                                            required
+                                    />
                                     <v-text-field
                                             ref="password"
                                             prepend-icon="fa-lock"
@@ -26,43 +33,34 @@
                                             :append-icon="e1 ? 'visibility' : 'visibility_off'"
                                             :type="e1 ? 'text' : 'password'"
                                             @click:append="e1 = !e1"
-                                    ></v-text-field>
+                                            :rules="passwordRules"
+                                            required
+                                    />
                                         <v-row no-gutters>
                                             <v-col cols="8">
                                                 <v-text-field
                                                     prepend-icon="fas fa-check-square"
                                                     v-model="code"
                                                     label="验证码"
-                                                    type="text">
+                                                    type="text"
+                                                    :rules="codeRules"
+                                                    required
+                                                >
                                                 </v-text-field>
                                             </v-col>
                                             <v-col cols="4">
                                                 <v-container fluid fill-height>
                                                     <v-layout align-center justify-center>
-                                                    <img src="../assets/code.png"/>
+                                                    <img src="../assets/code.png" alt="验证码"/>
                                                     </v-layout>
                                                 </v-container>
                                             </v-col>
                                         </v-row>
-<!--                                    <v-content class="d-inline-block">-->
-
-
-<!--                                    </v-content>-->
-<!--                                    <v-content class="d-inline-block ">-->
-<!--                                        <img src="../assets/code.png"/>-->
-<!--                                    </v-content>-->
-
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                        color="error"
-                                        class="mr-4"
-                                        @click="reset"
-                                >
-                                    重置
-                                </v-btn>
+                                <v-spacer/>
+                                <v-btn color="error" class="mr-4" @click="reset">重置</v-btn>
                                 <v-btn color="primary" @click="doLogin">登录</v-btn>
                             </v-card-actions>
                         </v-card>
@@ -79,24 +77,48 @@
 </template>
 
 <script>
+
     export default {
         data: () => ({
             username: "",
             password: "",
+            code:"",
             dialog: false,
-            e1:false
+            e1:false,
+            valid: true,
+            nameRules: [
+                v => !!v || '用户名不能为空',
+            ],
+            passwordRules: [
+                v => !!v || '密码不能为空',
+            ],
+            codeRules: [
+                v => !!v || '验证码不能为空',
+            ],
         }),
         methods: {
             reset () {
-                this.$refs.form.reset()
+                //重置表单
+                this.$refs.form.reset();
+                //取消验证
+                this.$refs.form.resetValidation();
             },
             doLogin() {
-                if (!this.username || !this.password) {
-                    this.dialog = true;
-                    return false;
-                }
-                console.log(this.username + " ... " + this.password);
-                this.$router.push("/");
+                //进行表单验证
+                this.$refs.form.validate();
+                //调用后台接口，如果登录成功，进行router跳转
+                this.$http({
+                    method: 'get',
+                    url:'/user/1',
+                }).then(res => {
+                    console.log(res)
+                    if (res){
+                        //跳转到首页
+                        this.$router.push("/helloWorld")
+                    }
+                }).catch({
+
+                });
             }
         }
     };

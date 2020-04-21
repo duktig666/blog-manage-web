@@ -7,6 +7,12 @@ import Login from '../components/Login';
 
 Vue.use(Router);
 
+//禁止Router打印全局异常
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+};
+
 export default new Router({
     routes: [
         // 默认路径
