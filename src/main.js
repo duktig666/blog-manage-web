@@ -12,7 +12,7 @@ Vue.withCredentials=true;
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
 
-// axios.defaults.baseURL = 'localhost:8090/api';
+axios.defaults.baseURL = '/api';
 //
 // axios.loadData = async function (url) {
 //   const resp = await axios.get(url);

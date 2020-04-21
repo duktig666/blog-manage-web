@@ -109,7 +109,7 @@
                 //调用后台接口，如果登录成功，进行router跳转
                 this.$http({
                     method: 'GET',
-                    url:'/api/user/all',
+                    url:'/user/all',
                 }).then(res => {
                     console.log(res)
                     if (res){
