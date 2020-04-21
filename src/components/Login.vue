@@ -108,8 +108,8 @@
                 this.$refs.form.validate();
                 //调用后台接口，如果登录成功，进行router跳转
                 this.$http({
-                    method: 'get',
-                    url:'/user/1',
+                    method: 'GET',
+                    url:'/api/user/all',
                 }).then(res => {
                     console.log(res)
                     if (res){

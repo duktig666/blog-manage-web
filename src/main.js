@@ -8,15 +8,16 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false;
+Vue.withCredentials=true;
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
 
-axios.defaults.baseURL = 'localhost:8090/api';
-
-axios.loadData = async function (url) {
-  const resp = await axios.get(url);
-  return resp.data;
-};
+// axios.defaults.baseURL = 'localhost:8090/api';
+//
+// axios.loadData = async function (url) {
+//   const resp = await axios.get(url);
+//   return resp.data;
+// };
 
 new Vue({
   vuetify,
