@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import HelloWorld from '../components/HelloWorld';
 import Login from '../components/Login';
+import NavBar from '../components/NavBar';
 
 
 Vue.use(Router);
@@ -19,6 +20,7 @@ export default new Router({
         {path:'/',redirect:'/login'},
         {path: '/helloWorld',name: 'HelloWorld', component: HelloWorld,children:[]},
         {path: '/login', name: "login", component: Login},
+        {path: '/navBar', name: "navBar", component: NavBar},
     ]
 })
 
