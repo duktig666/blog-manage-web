@@ -9,9 +9,9 @@ const menus = [
     title: "文章管理",
     path:"/blogs",
     items: [
-      { title: "博客管理", path: "/manage" },
-      { title: "写博客", path: "/write" },
-      { title: "回收站", path: "/recycle" },
+      {action: "home", title: "博客管理", path: "/manage" },
+      {action: "home", title: "写博客", path: "/write" },
+      {action: "home", title: "回收站", path: "/recycle" },
     ]
   },
   {

@@ -114,7 +114,7 @@
                     console.log(res)
                     if (res){
                         //跳转到首页
-                        this.$router.push("/helloWorld")
+                        this.$router.push("/navBar")
                     }
                 }).catch({
 
