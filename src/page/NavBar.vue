@@ -35,9 +35,12 @@
                                     no-action
                             >
                                 <template slot="activator">
-                                    <v-list-item-content>
-                                        <v-list-item-title v-text="item.title"></v-list-item-title>
-                                    </v-list-item-content>
+                                    <v-list-item>
+                                        <v-list-item-content >
+                                            <v-list-item-title v-text="item.title"></v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+
                                 </template>
                                 <!-- 二级菜单 -->
                                 <v-list-item
@@ -102,6 +105,10 @@
 <!--                        <v-breadcrumbs-item>{{ item1 }}</v-breadcrumbs-item>-->
 <!--                        <v-breadcrumbs-item>{{ item2 }}</v-breadcrumbs-item>-->
 <!--                    </v-breadcrumbs>-->
+                    <div>
+                        <!--定义一个路由锚点，Layout的子组件内容将在这里展示-->
+                        <router-view/>
+                    </div>
                 </v-content>
             </v-col>
         </v-row>

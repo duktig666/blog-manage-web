@@ -2,7 +2,7 @@ const menus = [
   {
     action: "home",
     title: "首页",
-    path: "/index",
+    path: "/home",
   },
   {
     action: "home",
@@ -22,7 +22,10 @@ const menus = [
   {
     action: "home",
     title: "标签管理",
-    path:"/label",
+    path:"",
+    items: [
+      {action: "home", title: "标签管理", path: "/label" },
+    ]
   },
   {
     action: "attach_money",
