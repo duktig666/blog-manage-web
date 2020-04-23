@@ -7,7 +7,7 @@ const menus = [
   {
     action: "home",
     title: "文章管理",
-    path:"/blogs",
+    path:"/blog",
     items: [
       {action: "home", title: "博客管理", path: "/manage" },
       {action: "home", title: "写博客", path: "/write" },

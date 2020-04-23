@@ -6,7 +6,9 @@
                 <v-navigation-drawer
                     v-model="drawer"
                     :mini-variant="miniVariant"
-                    absolute
+                    persistent
+                    enable-resize-watcher
+
                     dark
                     :color="dark ? 'secondary' : 'primary'"
             >
@@ -55,15 +57,19 @@
             </v-navigation-drawer>
             </v-col>
             <v-col cols="10">
-                 <!-- 顶部工具条 -->
+                <!-- 顶部工具条 -->
                 <v-toolbar
                         dark
+                        :mini-variant="miniVariant"
                         :color="dark ? 'secondary' : 'primary'"
                 >
                     <!-- 隐藏左侧菜单的按钮-->
+                    <v-btn icon @click.stop="drawer = !drawer">
+                        <v-icon>fas fa-list</v-icon>
+                    </v-btn>
                     <!-- 收起左侧菜单的按钮-->
-                    <v-btn icon @click.stop="miniVariant = !miniVariant">
-                        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"/>
+                    <v-btn icon @click.stop="miniVariant = !miniVariant" @click="width=1380">
+                        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"  />
                     </v-btn>
                     <!-- 切换黑暗主题 -->
                     <v-flex xs1>
@@ -91,6 +97,11 @@
 
                 <!--中间内容主体-->
                 <v-content>
+<!--                    <v-breadcrumbs>-->
+<!--                        <v-icon slot="divider">chevron_right</v-icon>-->
+<!--                        <v-breadcrumbs-item>{{ item1 }}</v-breadcrumbs-item>-->
+<!--                        <v-breadcrumbs-item>{{ item2 }}</v-breadcrumbs-item>-->
+<!--                    </v-breadcrumbs>-->
                 </v-content>
             </v-col>
         </v-row>
@@ -102,17 +113,25 @@
     export default {
         data() {
             return {
-                dark: false,// 是否暗黑主题
+                dark: true,// 是否暗黑主题
                 drawer: true,// 左侧导航是否隐藏
                 miniVariant: false,// 左侧导航是否收起
                 title: '个人博客后台管理',// 顶部导航条名称,
-                menuMap: {}
+                menuMap: {},
             }
         },
         computed: {
             items() {
                 return menus;
             },
+            item1() {
+                const arr = this.$route.path.split("/");
+                return this.menuMap[arr[1]].name;
+            },
+            item2() {
+                const arr = this.$route.path.split("/");
+                return this.menuMap[arr[1]][arr[2]];
+            }
         },
         name: 'App',
         watch: {},
