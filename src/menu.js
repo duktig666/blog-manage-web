@@ -7,11 +7,10 @@ const menus = [
   {
     action: "home",
     title: "文章管理",
-    path:"/blog",
     items: [
-      {action: "home", title: "博客管理", path: "/manage" },
-      {action: "home", title: "写博客", path: "/write" },
-      {action: "home", title: "回收站", path: "/recycle" },
+      {action: "home", title: "博客管理", path: "/blog/manage" },
+      {action: "home", title: "写博客", path: "/blog/write" },
+      {action: "home", title: "回收站", path: "/blog/recycle" },
     ]
   },
   {
@@ -22,10 +21,7 @@ const menus = [
   {
     action: "home",
     title: "标签管理",
-    path:"",
-    items: [
-      {action: "home", title: "标签管理", path: "/label" },
-    ]
+    path:"/label",
   },
   {
     action: "attach_money",

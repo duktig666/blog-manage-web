@@ -44,7 +44,7 @@
                                 <v-list-item
                                         v-for="subItem in item.items"
                                         :key="subItem.title"
-                                        :to="item.path + subItem.path">
+                                        :to="subItem.path">
                                     <v-list-item-action>
                                         <v-icon>{{ subItem.action }}</v-icon>
                                     </v-list-item-action>
@@ -69,7 +69,7 @@
                         <v-icon>fas fa-list</v-icon>
                     </v-btn>
                     <!-- 收起左侧菜单的按钮-->
-                    <v-btn icon @click.stop="miniVariant = !miniVariant" @click="width=1380">
+                    <v-btn icon @click.stop="miniVariant = !miniVariant">
                         <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"  />
                     </v-btn>
                     <!-- 切换黑暗主题 -->
@@ -89,6 +89,7 @@
                     <!-- 调色板 -->
                     <v-btn icon>
                         <v-icon>invert_colors</v-icon>
+
                     </v-btn>
                     <!-- 顶部导航用户菜单 -->
                     <v-btn icon>

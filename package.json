@@ -11,11 +11,12 @@
     "@fortawesome/fontawesome-free": "^5.8.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "element-ui": "^2.13.1",
+    "qs": "latest",
     "roboto-fontface": "*",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
-    "vuetify": "^2.2.11",
-    "qs": "latest"
+    "vuetify": "^2.2.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
