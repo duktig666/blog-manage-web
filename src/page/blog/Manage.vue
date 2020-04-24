@@ -6,7 +6,7 @@
                 <v-flex xs3>
                     <v-text-field label="输入关键字搜索" v-model.lazy="search" append-icon="search" hide-details/>
                 </v-flex>
-                <v-btn color="primary" class="ml-5" >搜索</v-btn>
+                <v-btn color="primary" class="ml-5">搜索</v-btn>
                 <v-btn color="primary" class="ml-5">重置</v-btn>
                 <v-btn color="primary" class="ml-5">批量删除</v-btn>
             </v-card-title>
@@ -26,10 +26,10 @@
                     <td class="text-xs-center">{{ props.item.label }}</td>
                     <td class="text-xs-center">{{ props.item.date }}</td>
                     <td class="justify-center layout px-0">
-                        <v-btn icon @click="editBrand(props.item)">
+                        <v-btn icon>
                             <i class="el-icon-edit"/>
                         </v-btn>
-                        <v-btn icon @click="deleteBrand(props.item)">
+                        <v-btn icon>
                             <i class="el-icon-delete"/>
                         </v-btn>
                     </td>
@@ -53,10 +53,10 @@
                 headers: [
                     {text: 'id', align: 'center', value: 'id'},
                     {text: '标题', align: 'center', sortable: false, value: 'title'},
-                    {text: '类别', align: 'center', sortable: false, value: 'typeId'},
-                    {text: '标签', align: 'center', sortable: false, value: 'content'},
-                    {text: '发布日期', align: 'center', sortable: true,value: 'updateDate', },
-                    {text: '操作', align: 'center',sortable: false,value:'id' },
+                    {text: '类别', align: 'center', sortable: false, value: 'type'},
+                    {text: '标签', align: 'center', sortable: false, value: 'label'},
+                    {text: '发布日期', align: 'center', sortable: true,value: 'update_date', },
+                    {text: '操作', align: 'center',sortable: false, value: 'work', }
                 ],
             }
         },
@@ -65,8 +65,8 @@
             this.getDataFromServer();
         },
         watch: {
-            options: { // 监视options属性的变化
-                deep: true, // deep为true，会监视options的属性及属性中的对象属性变化
+            pagination: { // 监视pagination属性的变化
+                deep: true, // deep为true，会监视pagination的属性及属性中的对象属性变化
                 handler() {
                     // 变化后的回调函数，这里我们再次调用getDataFromServer即可
                     this.getDataFromServer();
@@ -83,8 +83,8 @@
                 // 发起请求
                 this.$http.get("/blog/all", {
                     params: {
-                        currentPage: this.options.page,// 当前页
-                        rows: this.options.rowsPerPage,// 每页大小
+                        currentPage: this.pagination.page,// 当前页
+                        rows: this.pagination.rowsPerPage,// 每页大小
                         sort: null,// 排序字段
                         blogDimSearchStr: this.search, // 博客模糊查询所需数据
                     }
@@ -92,7 +92,7 @@
                     console.log(resp);
                     this.blogs = resp.data.items;
                     this.totalBrands = resp.data.total;
-                    // 完成赋值后，把加载状态赋值为false
+                    //完成赋值后，把加载状态赋值为false
                     this.loading = false;
                 })
             },

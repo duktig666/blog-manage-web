@@ -24,7 +24,7 @@
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-divider></v-divider>
+                        <v-divider/>
                         <v-list>
                             <v-list-group
                                     v-for="item in items"
@@ -36,7 +36,7 @@
                                 <template slot="activator">
                                     <v-list-item :to="item.path">
                                         <v-list-item-content >
-                                            <v-list-item-title v-text="item.title"></v-list-item-title>
+                                            <v-list-item-title v-text="item.title"/>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </template>

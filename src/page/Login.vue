@@ -106,6 +106,7 @@
             doLogin() {
                 //进行表单验证
                 this.$refs.form.validate();
+                this.$router.push("/navBar")
                 //调用后台接口，如果登录成功，进行router跳转
                 this.$http({
                     method: 'GET',
