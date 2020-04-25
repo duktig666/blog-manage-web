@@ -57,8 +57,14 @@
                         label="操作"
                         align="center"
                         min-width="200">
-                    <el-button type="warning" size="mini" icon="el-icon-edit" @click="updateBlogById">修改</el-button>
-                    <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteBlogById">删除</el-button>
+                    <template slot-scope="scope">
+                        <el-button type="warning" size="mini" icon="el-icon-edit" @click="updateBlogById(scope.row)">
+                            修改
+                        </el-button>
+                        <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteBlogById(scope.row)">
+                            删除
+                        </el-button>
+                    </template>
                 </el-table-column>
             </el-table>
             <!--      分页      -->
@@ -94,8 +100,8 @@
                     rows: 10, //每页大小
                     sort: "", //排序方式
                 },
-                rowInfo:"",
-                columnInfo:"",
+                rowInfo: "",
+                columnInfo: "",
             }
         },
         mounted() { // 渲染后执行
@@ -131,10 +137,10 @@
             },
             //获得排序信息
             sortBlog(val) {
-                if (val.order==="descending"){
-                    this.pageInfo.sort = val.prop+" DESC";
-                }else if(val.order==="ascending"){
-                    this.pageInfo.sort = val.prop+" ASC";
+                if (val.order === "descending") {
+                    this.pageInfo.sort = val.prop + " DESC";
+                } else if (val.order === "ascending") {
+                    this.pageInfo.sort = val.prop + " ASC";
                 }
             },
             //重置按钮执行事件
@@ -165,20 +171,49 @@
                 this.pageInfo.currentPage = val;
             },
             //表格行背点击执行的事件
-            clickRow(row, column, event){
-                this.rowInfo=row;
+            clickRow(row, column, event) {
+                this.rowInfo = row;
+                return row;
             },
             //删除一篇博客
-            deleteBlogById(){
-                var id=this.rowInfo.id;
-                console.log(this.rowInfo.id)
-                this.$http.delete("/blog/"+id
-                ).then(resp => { // 这里使用箭头函数
-                    console.log(resp);
-                })
+            deleteBlogById(row) {
+                this.$confirm('此操作将永久删除该博客, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    //点击确定按钮
+                    //执行删除博客的方法
+                    this.$http.delete("/blog/" + row.id
+                    ).then(resp => {
+                        // 查询数据
+                        this.getBlogsData();
+                        //回显消息
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        })
+                        console.log(resp)
+                    }).catch(error => {
+                        console.log(error.response);
+                            this.$message({
+                                type: 'error',
+                                message: error.response.data.message,
+                            })
+                        }
+                    );
+                }).catch(() => {
+                    //点击取消按钮
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
-            updateBlogById(){
-                console.log(this.rowInfo.id);
+            //修改博客
+            updateBlogById(row) {
+                //点击修改博客的方法，跳转写博客的页面（重新提交）
             },
         }
     }
