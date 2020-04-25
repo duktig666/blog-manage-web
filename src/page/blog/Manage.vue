@@ -6,7 +6,7 @@
                 <v-flex xs3>
                     <v-text-field id="search" label="输入关键字搜索" v-model.lazy="search" append-icon="search" hide-details/>
                 </v-flex>
-                <v-btn color="primary" class="ml-5">搜索</v-btn>
+                <v-btn color="primary" class="ml-5" @click="getBlogsData">搜索</v-btn>
                 <v-btn color="primary" class="ml-5" @click="reset">重置</v-btn>
                 <v-btn color="primary" class="ml-5">批量删除</v-btn>
             </v-card-title>
@@ -18,17 +18,13 @@
                     tooltip-effect="dark"
                     style="width: 100%"
                     stripe
+                    @sort-change="sortBlog"
+                    @row-click="clickRow"
             >
                 <el-table-column
                         align="center"
                         type="selection"
                         width="55">
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        label="ID"
-                        min-width="55">
-                    <template slot-scope="scope">{{ scope.row.id }}</template>
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -51,15 +47,18 @@
                 <el-table-column
                         align="center"
                         label="发布日期"
-                        min-width="120">
+                        min-width="120"
+                        sortable="custom"
+                        prop="create_date"
+                >
                     <template slot-scope="scope">{{ scope.row.createDate }}</template>
                 </el-table-column>
                 <el-table-column
                         label="操作"
                         align="center"
                         min-width="200">
-                    <el-button type="warning" size="mini" icon="el-icon-edit">修改</el-button>
-                    <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+                    <el-button type="warning" size="mini" icon="el-icon-edit" @click="updateBlogById">修改</el-button>
+                    <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteBlogById">删除</el-button>
                 </el-table-column>
             </el-table>
             <!--      分页      -->
@@ -72,7 +71,7 @@
                         :page-sizes="[1,10, 15, 20, 50,100]"
                         :page-size="pageInfo.rows"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="pageInfo.totalSize">
+                        :total="totalSize">
                 </el-pagination>
             </div>
 
@@ -88,12 +87,15 @@
                 loading: true, // 是否在加载中
                 // 当前页博客信息
                 blogs: [],
+                totalSize: 0,// 总条数
                 //分页信息
                 pageInfo: {
-                    totalSize: 0,// 总条数
-                    currentPage: 0, //当前页
-                    rows: 1, //每页大小
-                }
+                    currentPage: 1, //当前页
+                    rows: 10, //每页大小
+                    sort: "", //排序方式
+                },
+                rowInfo:"",
+                columnInfo:"",
             }
         },
         mounted() { // 渲染后执行
@@ -108,11 +110,6 @@
                     this.getBlogsData();
                 }
             },
-            search: { // 监视搜索字段
-                handler() {
-                    this.getBlogsData();
-                }
-            }
         },
         methods: {
             getBlogsData() { // 从服务的加载数的方法。
@@ -121,22 +118,33 @@
                     params: {
                         currentPage: this.pageInfo.currentPage,// 当前页
                         rows: this.pageInfo.rows,// 每页大小
-                        sort: null,// 排序字段
+                        sort: this.pageInfo.sort,// 排序字段
                         blogDimSearchStr: this.search, // 博客模糊查询所需数据
                     }
                 }).then(resp => { // 这里使用箭头函数
                     console.log(resp);
                     this.blogs = resp.data.items;
-                    this.pageInfo.totalSize = resp.data.total;
+                    this.totalSize = resp.data.total;
                     //完成赋值后，把加载状态赋值为false
                     this.loading = false;
                 })
             },
-            reset(){
+            //获得排序信息
+            sortBlog(val) {
+                if (val.order==="descending"){
+                    this.pageInfo.sort = val.prop+" DESC";
+                }else if(val.order==="ascending"){
+                    this.pageInfo.sort = val.prop+" ASC";
+                }
+            },
+            //重置按钮执行事件
+            reset() {
                 //清除多选
                 this.$refs.blogTable.clearSelection();
+                //清除默认的排序方式
+                this.$refs.blogTable.clearSort();
                 //清空搜索框内容
-                this.search="";
+                this.search = "";
             },
             //多选框事件
             toggleSelection(rows) {
@@ -156,7 +164,22 @@
             handleCurrentChange(val) {
                 this.pageInfo.currentPage = val;
             },
-
+            //表格行背点击执行的事件
+            clickRow(row, column, event){
+                this.rowInfo=row;
+            },
+            //删除一篇博客
+            deleteBlogById(){
+                var id=this.rowInfo.id;
+                console.log(this.rowInfo.id)
+                this.$http.delete("/blog/"+id
+                ).then(resp => { // 这里使用箭头函数
+                    console.log(resp);
+                })
+            },
+            updateBlogById(){
+                console.log(this.rowInfo.id);
+            },
         }
     }
 </script>
