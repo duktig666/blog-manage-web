@@ -30,19 +30,23 @@
                         align="center"
                         label="标题"
                         min-width="120">
-                    <template slot-scope="scope">{{ scope.row.title }}</template>
+                    <template slot-scope="scope">{{ scope.row.blog.title }}</template>
                 </el-table-column>
                 <el-table-column
                         align="center"
                         label="类型"
                         min-width="120">
-                    <template slot-scope="scope">{{ scope.row.type }}</template>
+                    <template slot-scope="scope">{{ scope.row.blogType.type }}</template>
                 </el-table-column>
                 <el-table-column
                         align="center"
                         label="标签"
                         min-width="120">
-                    <template slot-scope="scope">{{ scope.row.label }}</template>
+                    <template slot-scope="scope">
+                        <div v-for="labelList in scope.row.blogLabelList">
+                            {{ labelList.label }}
+                        </div>
+                        </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -51,7 +55,7 @@
                         sortable="custom"
                         prop="create_date"
                 >
-                    <template slot-scope="scope">{{ scope.row.createDate }}</template>
+                    <template slot-scope="scope">{{ scope.row.blog.createDate }}</template>
                 </el-table-column>
                 <el-table-column
                         label="操作"
@@ -177,6 +181,7 @@
             },
             //删除一篇博客
             deleteBlogById(row) {
+                console.log(row)
                 this.$confirm('此操作将永久删除该博客, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -213,7 +218,18 @@
             },
             //修改博客
             updateBlogById(row) {
-                //点击修改博客的方法，跳转写博客的页面（重新提交）
+                // this.$http({
+                //     method: 'put',
+                //     url: '/blog',
+                //     data: this.$qs.stringify(row)
+                // }).then(() => {
+                //     // 关闭窗口
+                //     this.$emit("close");
+                //     this.$message.success("修改成功！");
+                // })
+                //     .catch(() => {
+                //         this.$message.error("修改失败！");
+                //     });
             },
         }
     }
