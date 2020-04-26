@@ -43,7 +43,7 @@
                         label="标签"
                         min-width="120">
                     <template slot-scope="scope">
-                        <div v-for="labelList in scope.row.blogLabelList">
+                        <div v-for="labelList in scope.row.blogLabelList" :key="labelList.id">
                             {{ labelList.label }}
                         </div>
                         </template>
@@ -104,8 +104,6 @@
                     rows: 10, //每页大小
                     sort: "", //排序方式
                 },
-                rowInfo: "",
-                columnInfo: "",
             }
         },
         mounted() { // 渲染后执行
@@ -174,11 +172,6 @@
             handleCurrentChange(val) {
                 this.pageInfo.currentPage = val;
             },
-            //表格行背点击执行的事件
-            clickRow(row, column, event) {
-                this.rowInfo = row;
-                return row;
-            },
             //删除一篇博客
             deleteBlogById(row) {
                 console.log(row)
@@ -218,6 +211,7 @@
             },
             //修改博客
             updateBlogById(row) {
+                console.log(row)
                 // this.$http({
                 //     method: 'put',
                 //     url: '/blog',
