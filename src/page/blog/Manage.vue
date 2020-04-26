@@ -19,7 +19,6 @@
                     style="width: 100%"
                     stripe
                     @sort-change="sortBlog"
-                    @row-click="clickRow"
             >
                 <el-table-column
                         align="center"

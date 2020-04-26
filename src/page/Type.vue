@@ -127,8 +127,40 @@
                 this.pageInfo.currentPage = val;
             },
             //新增博客类型
-            saveType(){
-
+            saveType() {
+                this.$prompt('请输入博客类型', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /^.{2,10}$/,
+                    inputErrorMessage: '博客类型格式不正确（请输入2-10个字符）'
+                }).then(({value}) => {
+                    //发送请求
+                    this.$http.post("/blog-type", this.$qs.stringify({
+                            'type': value
+                        })
+                    ).then(resp => {
+                        // 查询数据
+                        this.getTypesData();
+                        //回显消息
+                        this.$message({
+                            type: 'success',
+                            message: '新增博客类型成功，博客类型: ' + value
+                        });
+                        console.log(resp)
+                    }).catch(error => {
+                            console.log(error.response);
+                            this.$message({
+                                type: 'error',
+                                message: error.response.data.message,
+                            })
+                        }
+                    );
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
             },
             //删除一条博客类型
             deleteTypeById(row) {
