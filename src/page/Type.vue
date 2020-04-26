@@ -3,7 +3,7 @@
         <v-card>
             <v-card-title>
                 <v-btn small min-width="120" min-height="32" color="orange" @click="saveType">添加</v-btn>
-                <v-btn small min-width="120" min-height="32" color="#FFAB91">批量删除</v-btn>
+                <v-btn small min-width="120" min-height="32" color="#FFAB91" @click="deleteTypes">批量删除</v-btn>
             </v-card-title>
             <v-divider/>
             <!--       表格      -->
@@ -13,6 +13,7 @@
                     tooltip-effect="dark"
                     style="width: 100%"
                     stripe
+                    @selection-change="handleSelectionChange"
             >
                 <el-table-column
                         align="center"
@@ -77,6 +78,8 @@
                     currentPage: 1, //当前页
                     rows: 10, //每页大小
                 },
+                isSave: true,  //是否为新增 true为新增，false为修改（主要用于合并put和get请求）
+                multipleSelection: [], //存储表格多选信息
             }
         },
         mounted() { // 渲染后执行
@@ -126,6 +129,10 @@
             handleCurrentChange(val) {
                 this.pageInfo.currentPage = val;
             },
+            //表格多选事件
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             //新增博客类型
             saveType() {
                 this.$prompt('请输入博客类型', '提示', {
@@ -136,7 +143,7 @@
                 }).then(({value}) => {
                     //发送请求
                     this.$http.post("/blog-type", this.$qs.stringify({
-                            'type': value
+                            type: value
                         })
                     ).then(resp => {
                         // 查询数据
@@ -164,7 +171,6 @@
             },
             //删除一条博客类型
             deleteTypeById(row) {
-                console.log(row)
                 this.$confirm('此操作将永久删除该博客类型, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -181,7 +187,56 @@
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
-                        })
+                        });
+                        console.log(resp)
+                    }).catch(error => {
+                            console.log(error.response);
+                            this.$message({
+                                type: 'error',
+                                message: error.response.data.message,
+                            })
+                        }
+                    );
+                }).catch(() => {
+                    //点击取消按钮
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            //批量删除博客类型
+            deleteTypes() {
+                //博客的id数组
+                let ids =[];
+                this.multipleSelection.forEach(type => {
+                        ids.push(type.id);
+                    }
+                );
+                //调用接口
+                this.$confirm('此操作将永久批量删除这些博客类型, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    //点击确定按钮
+                    //执行删除博客的方法
+                    this.$http.delete("/blog-type/ids",
+                        // this.$qs.parse({
+                        //     blogTypeIds: ids
+                        // })
+                        {
+                            blogTypeIds: JSON.stringify(ids)
+                        }
+                    ).then(resp => {
+                        // 查询数据
+                        this.getTypesData();
+                        //回显消息
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
                         console.log(resp)
                     }).catch(error => {
                             console.log(error.response);
@@ -201,19 +256,44 @@
             },
             //修改一条博客类型
             updateTypeById(row) {
-                console.log(row)
-                // this.$http({
-                //     method: 'put',
-                //     url: '/blog',
-                //     data: this.$qs.stringify(row)
-                // }).then(() => {
-                //     // 关闭窗口
-                //     this.$emit("close");
-                //     this.$message.success("修改成功！");
-                // })
-                //     .catch(() => {
-                //         this.$message.error("修改失败！");
-                //     });
+                this.$prompt('请输入博客类型', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /^.{2,10}$/,
+                    inputErrorMessage: '博客类型格式不正确（请输入2-10个字符）',
+                    inputValue: row.type
+                }).then(({value}) => {
+                    //发送请求
+                    this.$http({
+                        method: 'put',
+                        url: '/blog-type',
+                        data: this.$qs.stringify({
+                            id: row.id,
+                            type: value
+                        })
+                    }).then(resp => {
+                        // 查询数据
+                        this.getTypesData();
+                        //回显消息
+                        this.$message({
+                            type: 'success',
+                            message: '修改博客类型成功，博客类型: ' + value
+                        });
+                        console.log(resp)
+                    }).catch(error => {
+                            console.log(error.response);
+                            this.$message({
+                                type: 'error',
+                                message: error.response.data.message,
+                            })
+                        }
+                    );
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
             },
         }
     }
