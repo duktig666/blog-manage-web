@@ -1,3 +1,5 @@
+const ipFile = require('./src/ip');
+
 module.exports = {
   "transpileDependencies": [
     "vuetify"
@@ -6,6 +8,7 @@ module.exports = {
   devServer: {
     // 项目运行时候的端口号
     host: "localhost",
+//    host: ipFile.getIp(),
     port: 8089,
     proxy: {
       '/api': {
