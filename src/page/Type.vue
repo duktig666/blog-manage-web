@@ -208,51 +208,56 @@
             //批量删除博客类型
             deleteTypes() {
                 //博客的id数组
-                let ids =[];
+                let ids = [];
                 this.multipleSelection.forEach(type => {
                         ids.push(type.id);
                     }
                 );
-                //调用接口
-                this.$confirm('此操作将永久批量删除这些博客类型, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                    center: true
-                }).then(() => {
-                    //点击确定按钮
-                    //执行删除博客的方法
-                    this.$http.delete("/blog-type/ids",
-                        // this.$qs.parse({
-                        //     blogTypeIds: ids
-                        // })
-                        {
-                            blogTypeIds: JSON.stringify(ids)
-                        }
-                    ).then(resp => {
-                        // 查询数据
-                        this.getTypesData();
-                        //回显消息
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        console.log(resp)
-                    }).catch(error => {
-                            console.log(error.response);
-                            this.$message({
-                                type: 'error',
-                                message: error.response.data.message,
+                if (ids.length!==0){
+                    //调用接口
+                    this.$confirm('此操作将永久批量删除这些博客类型, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                        center: true
+                    }).then(() => {
+                        //点击确定按钮
+                        //执行删除博客的方法
+                        this.$http.delete("/blog-type/ids",
+                            this.$qs.parse({
+                                blogTypeIds: ids
                             })
-                        }
-                    );
-                }).catch(() => {
-                    //点击取消按钮
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
+                        ).then(resp => {
+                            // 查询数据
+                            this.getTypesData();
+                            //回显消息
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            console.log(resp)
+                        }).catch(error => {
+                                console.log(error.response);
+                                this.$message({
+                                    type: 'error',
+                                    message: error.response.data.message,
+                                })
+                            }
+                        );
+                    }).catch(() => {
+                        //点击取消按钮
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
                     });
-                });
+                }else{
+                    this.$message({
+                        type: 'warn',
+                        message: '请选择博客类型后，再批量删除'
+                    });
+                }
+
             },
             //修改一条博客类型
             updateTypeById(row) {
