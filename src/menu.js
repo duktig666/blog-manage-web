@@ -25,8 +25,8 @@ const menus = [
   },
   {
     action: "attach_money",
-    title: "评论管理",
-    path: "/observe",
+    title: "留言管理",
+    path: "/leaveWord",
   },
   {
     action: "settings",

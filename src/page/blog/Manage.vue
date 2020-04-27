@@ -19,6 +19,7 @@
                     style="width: 100%"
                     stripe
                     @sort-change="sortBlog"
+                    @expand-change="expandSelect"
             >
                 <el-table-column
                         align="center"
@@ -57,6 +58,53 @@
                     <template slot-scope="scope">{{ scope.row.blog.createDate }}</template>
                 </el-table-column>
                 <el-table-column
+                        type="expand"
+                        label="评论"
+                        align="center"
+                        min-width="200"
+                >
+                    <template slot-scope="scope" @click="searchObserve(scope.row.blog.id)">
+                        <!--    评论回复表格      -->
+                        <el-table
+                                ref="blogTable"
+                                :data="observe"
+                                tooltip-effect="dark"
+                                style="width: 100%"
+                                stripe
+                                row-key="observeContent"
+                                default-expand-all
+                                :tree-props="{children: 'nextNodes', hasChildren: 'hasChildren'}">
+                            >
+                            <el-table-column
+                                    align="center"
+                                    label="级别"
+                                    min-width="120">
+                                <template slot-scope="scope"  >{{ scope.row.lastId }}级评论</template>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    label="评论者"
+                                    min-width="120">
+                                <template slot-scope="scope">{{ scope.row.user.nickname }}</template>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    label="发布日期"
+                                    min-width="120"
+                            >
+                                <template slot-scope="scope">{{ scope.row.createDate }}</template>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    label="评论"
+                                    min-width="120"
+                            >
+                                <template slot-scope="scope">{{ scope.row.observeContent }}</template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-table-column>
+                <el-table-column
                         label="操作"
                         align="center"
                         min-width="200">
@@ -69,6 +117,7 @@
                         </el-button>
                     </template>
                 </el-table-column>
+
             </el-table>
             <!--      分页      -->
             <div class="block">
@@ -83,7 +132,6 @@
                         :total="totalSize">
                 </el-pagination>
             </div>
-
         </v-card>
     </v-app>
 </template>
@@ -96,6 +144,8 @@
                 loading: true, // 是否在加载中
                 // 当前页博客信息
                 blogs: [],
+                // 评论回复
+                observe: [],
                 totalSize: 0,// 总条数
                 //分页信息
                 pageInfo: {
@@ -182,7 +232,7 @@
                 }).then(() => {
                     //点击确定按钮
                     //执行删除博客的方法
-                    this.$http.delete("/blog/" + row.id
+                    this.$http.delete("/blog/" + row.blog.id
                     ).then(resp => {
                         // 查询数据
                         this.getBlogsData();
@@ -211,19 +261,18 @@
             //修改博客
             updateBlogById(row) {
                 console.log(row)
-                // this.$http({
-                //     method: 'put',
-                //     url: '/blog',
-                //     data: this.$qs.stringify(row)
-                // }).then(() => {
-                //     // 关闭窗口
-                //     this.$emit("close");
-                //     this.$message.success("修改成功！");
-                // })
-                //     .catch(() => {
-                //         this.$message.error("修改失败！");
-                //     });
             },
+            expandSelect(row) {
+                // 发起请求
+                this.$http.get("/observe/" + row.blog.id
+                ).then(resp => { // 这里使用箭头函数
+                    console.log(resp);
+                    this.observe = resp.data;
+                    this.totalSize = resp.data.size;
+                    //完成赋值后，把加载状态赋值为false
+                    this.loading = false;
+                })
+            }
         }
     }
 </script>

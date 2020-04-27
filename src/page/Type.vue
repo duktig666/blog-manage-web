@@ -3,7 +3,7 @@
         <v-card>
             <v-card-title>
                 <v-btn small min-width="120" min-height="32" color="orange" @click="saveType">添加</v-btn>
-                <v-btn small min-width="120" min-height="32" color="#FFAB91" @click="deleteTypes">批量删除</v-btn>
+                <v-btn small min-width="120" min-height="32" color="#FFAB91" @click="deleteTypes" class="ml-10">批量删除</v-btn>
             </v-card-title>
             <v-divider/>
             <!--       表格      -->

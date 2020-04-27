@@ -1,8 +1,8 @@
 <template>
-    <div></div>
+    <v-app>123</v-app>
 </template>
 <script>
-    export default {}
+
 </script>
 <style scoped>
 

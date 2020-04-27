@@ -35,7 +35,7 @@ export default new Router({
                 route("/blog/recycle","/blog/Recycle","Recycle"),
                 route("/blog/write","/blog/Write","Write"),
                 route("/label","/Label","Label"),
-                route("/observe","/Observe","Observe"),
+                route("/leaveWord","/LeaveWord","LeaveWord"),
                 route("/type","/Type","Type"),
                 route("/user","/User","User"),
 
