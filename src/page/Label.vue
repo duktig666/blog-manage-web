@@ -66,7 +66,7 @@
 </template>
 <script>
     export default {
-        name: "label",
+        name: "blog-label",
         data() {
             return {
                 loading: true, // 是否在加载中
@@ -103,7 +103,6 @@
                         rows: this.pageInfo.rows,// 每页大小
                     }
                 }).then(resp => { // 这里使用箭头函数
-                    console.log(resp);
                     this.labels = resp.data.items;
                     this.totalSize = resp.data.total;
                     //完成赋值后，把加载状态赋值为false
@@ -189,7 +188,6 @@
                         });
                         console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,
@@ -207,12 +205,12 @@
             //批量删除博客类型
             deleteLabels() {
                 //博客的id数组
-                let ids = [];
-                this.multipleSelection.forEach(type => {
-                        ids.push(type.id);
+                let blogLabelIds = [];
+                this.multipleSelection.forEach(label => {
+                    blogLabelIds.push(label.id);
                     }
                 );
-                if (ids.length!==0){
+                if (blogLabelIds.length!==0){
                     //调用接口
                     this.$confirm('此操作将永久批量删除这些博客标签, 是否继续?', '提示', {
                         confirmButtonText: '确定',
@@ -222,13 +220,17 @@
                     }).then(() => {
                         //点击确定按钮
                         //执行删除博客的方法
-                        this.$http.delete("/blog-label/ids",
-                            this.$qs.parse({
-                                blogTypeIds: ids
-                            })
-                        ).then(resp => {
+                        this.$http({
+                            method:"post",
+                            url:"/blog-label/ids",
+                            dataType: "json",
+                            data: JSON.stringify(blogLabelIds),
+                            headers:{
+                                'Content-Type':'application/json;charset=UTF-8',
+                            }
+                        }).then(resp => {
                             // 查询数据
-                            this.getTypesData();
+                            this.getLabelsData();
                             //回显消息
                             this.$message({
                                 type: 'success',

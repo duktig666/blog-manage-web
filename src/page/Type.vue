@@ -105,7 +105,6 @@
                         rows: this.pageInfo.rows,// 每页大小
                     }
                 }).then(resp => { // 这里使用箭头函数
-                    console.log(resp);
                     this.types = resp.data.items;
                     this.totalSize = resp.data.total;
                     //完成赋值后，把加载状态赋值为false
@@ -209,25 +208,29 @@
             //批量删除博客类型
             deleteTypes() {
                 //博客的id数组
-                let ids = [];
+                let blogTypeIds = [];
                 this.multipleSelection.forEach(type => {
-                        ids.push(type.id);
+                    blogTypeIds.push(type.id);
                     }
                 );
-                if (ids.length !== 0) {
-                    //调用接口
+                if (blogTypeIds.length !== 0) {
+                    //点击确定按钮
+                    //执行删除博客的方法
                     this.$confirm('此操作将永久批量删除这些博客类型, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning',
                         center: true
                     }).then(() => {
-                        //点击确定按钮
-                        //执行删除博客的方法
-                        this.$http.delete("/blog-type/ids", this.$qs.parse({
-                                blogTypeIds: ids
-                            })
-                        ).then(resp => {
+                        this.$http({
+                            method:"post",
+                            url:"/blog-type/ids",
+                            dataType: "json",
+                            data: JSON.stringify(blogTypeIds),
+                            headers:{
+                                'Content-Type':'application/json;charset=UTF-8',
+                            }
+                        }).then(resp => {
                             // 查询数据
                             this.getTypesData();
                             //回显消息
