@@ -8,6 +8,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.config.productionTip = false;
 Vue.withCredentials=true;
@@ -15,12 +17,10 @@ Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
 
 axios.defaults.baseURL = '/api';
-//
-// axios.loadData = async function (url) {
-//   const resp = await axios.get(url);
-//   return resp.data;
-// };
+
 Vue.use(ElementUI);
+Vue.use(mavonEditor);
+
 new Vue({
   vuetify,
   router,

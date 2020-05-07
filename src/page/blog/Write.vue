@@ -1,9 +1,22 @@
 <template>
-    <div><h1>我是写博客</h1></div>
+    <v-app>
+        <div class="mavonEditor">
+            <mavon-editor v-model="blogMarkDown"/>
+        </div>
+    </v-app>
 </template>
 <script>
-    export default {}
+    export default {
+        data() {
+            return {
+                blogMarkDown: ""
+            };
+        },
+    }
 </script>
 <style scoped>
-
+    .mavonEditor {
+        width: 100%;
+        height: 100%;
+    }
 </style>

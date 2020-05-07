@@ -3,7 +3,8 @@
         <v-card>
             <v-card-title>
                 <v-btn small min-width="120" min-height="32" color="orange" @click="saveType">添加</v-btn>
-                <v-btn small min-width="120" min-height="32" color="#FFAB91" @click="deleteTypes" class="ml-10">批量删除</v-btn>
+                <v-btn small min-width="120" min-height="32" color="#FFAB91" @click="deleteTypes" class="ml-10">批量删除
+                </v-btn>
             </v-card-title>
             <v-divider/>
             <!--       表格      -->
@@ -213,7 +214,7 @@
                         ids.push(type.id);
                     }
                 );
-                if (ids.length!==0){
+                if (ids.length !== 0) {
                     //调用接口
                     this.$confirm('此操作将永久批量删除这些博客类型, 是否继续?', '提示', {
                         confirmButtonText: '确定',
@@ -223,8 +224,7 @@
                     }).then(() => {
                         //点击确定按钮
                         //执行删除博客的方法
-                        this.$http.delete("/blog-type/ids",
-                            this.$qs.parse({
+                        this.$http.delete("/blog-type/ids", this.$qs.parse({
                                 blogTypeIds: ids
                             })
                         ).then(resp => {
@@ -251,7 +251,7 @@
                             message: '已取消删除'
                         });
                     });
-                }else{
+                } else {
                     this.$message({
                         type: 'warn',
                         message: '请选择博客类型后，再批量删除'
