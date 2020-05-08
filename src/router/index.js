@@ -1,11 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import HelloWorld from '../components/HelloWorld';
-// import Login from '../page/Login';
-// import NavBar from '../page/NavBar';
-// import manage from '../page/blog/manage'
-
 Vue.use(Router);
 
 //禁止Router打印全局异常
@@ -40,16 +35,8 @@ export default new Router({
                 route("/user","/User","User"),
 
             ]
-        }
+        },
+        route("/blog/update",'/blog/Update',"Update"),
     ]
-    // routes: [
-    //     // 默认路径
-    //     {path:'/',redirect:'/login'},
-    //     {path: '/helloWorld',name: 'HelloWorld', component: HelloWorld,children:[]},
-    //     {path: '/login', name: "login", component: Login},
-    //     {path: '/navBar', name: "navBar", component: NavBar,children:[
-    //             {path: '/login', name: "login", component: Login},
-    //         ]},
-    // ]
 })
 

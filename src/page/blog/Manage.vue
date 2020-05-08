@@ -136,6 +136,7 @@
     </v-app>
 </template>
 <script>
+
     export default {
         name: "manage",
         data() {
@@ -223,7 +224,6 @@
             },
             //删除一篇博客
             deleteBlogById(row) {
-                console.log(row)
                 this.$confirm('此操作将永久删除该博客, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -260,7 +260,12 @@
             },
             //修改博客
             updateBlogById(row) {
-                console.log(row)
+                this.$router.push({
+                    path: '/blog/update',
+                    query: {
+                        blogId: row.blog.id,
+                    }
+                });
             },
             expandSelect(row) {
                 // 发起请求
