@@ -49,6 +49,7 @@
             <!--      分页      -->
             <div class="block">
                 <el-pagination
+                        class="page"
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         background
@@ -305,6 +306,10 @@
     }
 </script>
 <style scoped>
-
+    .page {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
 </style>
 

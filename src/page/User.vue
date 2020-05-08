@@ -42,7 +42,9 @@
                         align="center"
                         label="头像"
                         min-width="120">
-                    <template slot-scope="scope">{{ scope.row.picture }}</template>
+                    <template slot-scope="scope">
+                        <img :src="scope.row.picture" class="user-picture">
+                    </template>
                 </el-table-column>
                 <el-table-column
                         align="center"
@@ -73,6 +75,7 @@
             <!--      分页      -->
             <div class="block">
                 <el-pagination
+                        class="page"
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         background
@@ -222,5 +225,14 @@
     }
 </script>
 <style scoped>
-
+    .user-picture {
+        height: 30px;
+        width: 30px;
+        border-radius: 30px;
+    }
+    .page {
+       display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
 </style>
