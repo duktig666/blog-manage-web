@@ -111,8 +111,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    //md格式博客正文
-                    this.blogMarkDownContent = this.$refs.md.d_render;
                     this.$http({
                         method: "post",
                         url: "/blog",
@@ -121,7 +119,7 @@
                                 title: this.blogTitle,
                                 summary: this.blogSummary,
                                 content: this.blogMarkDownContent,
-                                contentHtml: this.$refs.md.d_value,
+                                contentHtml: this.$refs.md.d_render,
                                 typeId: this.blogTypeId,
                             },
                             blogLabelIds: this.blogLabelIds,
