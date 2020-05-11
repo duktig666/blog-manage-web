@@ -133,8 +133,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    //md格式博客正文
-                    this.blog.blogMarkDownContent = this.$refs.md.d_render;
                     this.$http({
                         method: "put",
                         url: "/blog",
@@ -144,7 +142,7 @@
                                 title: this.blog.blogTitle,
                                 summary: this.blog.blogSummary,
                                 content: this.blog.blogMarkDownContent,
-                                contentHtml: this.$refs.md.d_value,
+                                contentHtml: this.$refs.md.d_render,
                                 typeId: this.blog.blogTypeId,
                             },
                             blogLabelIds: this.blog.blogLabelIds,
@@ -153,7 +151,7 @@
                         //回显消息
                         this.$message({
                             type: 'success',
-                            message: '新增博客成功，博客: ' + this.blogTitle
+                            message: '修改博客成功，博客: ' + this.blog.blogTitle
                         });
                         //关闭对话框
                         this.dialogSaveBlog = false;

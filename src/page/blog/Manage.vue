@@ -8,7 +8,7 @@
                 </v-flex>
                 <v-btn color="primary" class="ml-5" @click="getBlogsData">搜索</v-btn>
                 <v-btn color="primary" class="ml-5" @click="reset">重置</v-btn>
-                <v-btn color="primary" class="ml-5">批量删除</v-btn>
+                <v-btn color="primary" class="ml-5" @click="deleteBlogs">批量删除</v-btn>
             </v-card-title>
             <v-divider/>
             <!--       表格      -->
@@ -20,6 +20,7 @@
                     stripe
                     @sort-change="sortBlog"
                     @expand-change="expandSelect"
+                    @selection-change="handleSelectionChange"
             >
                 <el-table-column
                         align="center"
@@ -155,6 +156,7 @@
                     rows: 10, //每页大小
                     sort: "", //排序方式
                 },
+                multipleSelection: [], //存储表格多选信息
             }
         },
         mounted() { // 渲染后执行
@@ -215,6 +217,10 @@
                     this.$refs.blogTable.clearSelection();
                 }
             },
+            //表格多选事件
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             //当前条数改变
             handleSizeChange(val) {
                 this.pageInfo.rows = val;
@@ -258,6 +264,64 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            //批量删除博客
+            deleteBlogs() {
+                //博客的id数组
+                let blogIds = [];
+                this.multipleSelection.forEach(blog => {
+                        blogIds.push(blog.blog.id);
+                    }
+                );
+                if (blogIds.length!==0){
+                    //调用接口
+                    this.$confirm('此操作将永久批量删除这些博客, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                        center: true
+                    }).then(() => {
+                        //点击确定按钮
+                        //执行删除博客的方法
+                        this.$http({
+                            method:"post",
+                            url:"/blog/ids",
+                            dataType: "json",
+                            data: JSON.stringify(blogIds),
+                            headers:{
+                                'Content-Type':'application/json;charset=UTF-8',
+                            }
+                        }).then(resp => {
+                            // 查询数据
+                            this.getBlogsData();
+                            //回显消息
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            console.log(resp)
+                        }).catch(error => {
+                                console.log(error.response);
+                                this.$message({
+                                    type: 'error',
+                                    message: error.response.data.message,
+                                })
+                            }
+                        );
+                    }).catch(() => {
+                        //点击取消按钮
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                }else{
+                    this.$message({
+                        type: 'warn',
+                        message: '请选择博客后，再批量删除'
+                    });
+                }
+
             },
             //修改博客
             updateBlogById(row) {

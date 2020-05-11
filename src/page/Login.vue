@@ -36,26 +36,34 @@
                                             :rules="passwordRules"
                                             required
                                     />
-                                        <v-row no-gutters>
-                                            <v-col cols="8">
-                                                <v-text-field
+                                    <v-row no-gutters>
+                                        <v-col cols="8">
+                                            <v-text-field
                                                     prepend-icon="fas fa-check-square"
                                                     v-model="code"
                                                     label="验证码"
                                                     type="text"
-                                                    :rules="codeRules"
+                                                    :rules="[codeRules]"
                                                     required
-                                                >
-                                                </v-text-field>
-                                            </v-col>
-                                            <v-col cols="4">
-                                                <v-container fluid fill-height>
-                                                    <v-layout align-center justify-center>
-                                                    <img src="../assets/code.png" alt="验证码"/>
-                                                    </v-layout>
-                                                </v-container>
-                                            </v-col>
-                                        </v-row>
+                                            >
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <!--                                            <v-container fluid fill-height>-->
+                                            <v-layout align-center justify-center>
+                                                <!--    图片验证码    -->
+                                                <div @click="refreshCode">
+                                                    <identify-code
+                                                            :identifyCode="identifyCode"
+                                                            :contentWidth="150"
+                                                            :contentHeight="50"
+                                                            :fontSizeMin="50"
+                                                    />
+                                                </div>
+                                            </v-layout>
+                                            <!--                                            </v-container>-->
+                                        </v-col>
+                                    </v-row>
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
@@ -77,27 +85,32 @@
 </template>
 
 <script>
+    import IdentifyCode from '../components/IdentifyCode'
 
     export default {
+        name: 'login',
+        components: {
+            'identify-code': IdentifyCode,
+        },
         data: () => ({
             username: "",
             password: "",
-            code:"",
+            code: "",
             dialog: false,
-            e1:false,
+            e1: false,
             valid: true,
+            identifyCodes: "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789",
+            identifyCode: "",
+            isSuccessCode: false,
             nameRules: [
                 v => !!v || '用户名不能为空',
             ],
             passwordRules: [
                 v => !!v || '密码不能为空',
             ],
-            codeRules: [
-                v => !!v || '验证码不能为空',
-            ],
         }),
         methods: {
-            reset () {
+            reset() {
                 //重置表单
                 this.$refs.form.reset();
                 //取消验证
@@ -110,17 +123,47 @@
                 //调用后台接口，如果登录成功，进行router跳转
                 this.$http({
                     method: 'GET',
-                    url:'/user/all',
+                    url: '/user/all',
                 }).then(res => {
                     console.log(res)
-                    if (res){
+                    if (res) {
                         //跳转到首页
                         this.$router.push("/navBar")
                     }
-                }).catch({
-
-                });
+                }).catch({});
+            },
+            //图片验证规则校验
+            codeRules(value) {
+                if (value.toLowerCase() !== this.identifyCode.toLowerCase()) {
+                    return "验证码输入不正确";
+                } else if (value.length === 0) {
+                    return "验证码不能为空";
+                } else {
+                    return true;
+                }
+            },
+            //生成随机数
+            randomNum(min, max) {
+                return Math.floor(Math.random() * (max - min) + min);
+            },
+            //刷新验证码
+            refreshCode() {
+                this.identifyCode = "";
+                this.makeCode(this.identifyCodes, 4);
+            },
+            //生成验证码
+            makeCode(o, l) {
+                for (let i = 0; i < l; i++) {
+                    this.identifyCode += this.identifyCodes[
+                        this.randomNum(0, this.identifyCodes.length)
+                        ];
+                }
+                console.log(this.identifyCode);
             }
-        }
+        },
+        mounted() {
+            this.identifyCode = "";
+            this.makeCode(this.identifyCodes, 4);
+        },
     };
 </script>
