@@ -167,7 +167,7 @@
                 pageInfo: {
                     currentPage: 1, //当前页
                     rows: 10, //每页大小
-                    sort: "", //排序方式
+                    sort: "create_date desc", //排序方式
                 },
                 // 日期选择器，快捷选项
                 pickerOptions: {
