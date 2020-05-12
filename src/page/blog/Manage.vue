@@ -4,8 +4,21 @@
             <v-card-title>
                 <!--搜索框，与search属性关联-->
                 <v-flex xs3>
-                    <v-text-field id="search" label="输入关键字搜索" v-model.lazy="search" append-icon="search" hide-details/>
+                    <v-text-field id="search" label="输入关键字搜索" v-model.lazy="search" hide-details/>
                 </v-flex>
+                <!--     日期选择器    -->
+                    <el-date-picker
+                            v-model="value"
+                            type="datetimerange"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            align="right"
+                            unlink-panels
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            @change="getDateTime"
+                            :picker-options="pickerOptions">
+                    </el-date-picker>
                 <v-btn color="primary" class="ml-5" @click="getBlogsData">搜索</v-btn>
                 <v-btn color="primary" class="ml-5" @click="reset">重置</v-btn>
                 <v-btn color="primary" class="ml-5" @click="deleteBlogs">批量删除</v-btn>
@@ -156,7 +169,35 @@
                     rows: 10, //每页大小
                     sort: "", //排序方式
                 },
-                multipleSelection: [], //存储表格多选信息
+                // 日期选择器，快捷选项
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                value: '' // 选取的时间区间
             }
         },
         mounted() { // 渲染后执行
@@ -173,6 +214,10 @@
             },
         },
         methods: {
+            // 获取时间选择器中的区间
+            getDateTime() {
+                console.log(this.value[1].valueOf())
+            },
             getBlogsData() { // 从服务的加载数的方法。
                 // 发起请求
                 this.$http.get("/blog/all", {
@@ -181,13 +226,22 @@
                         rows: this.pageInfo.rows,// 每页大小
                         sort: this.pageInfo.sort,// 排序字段
                         blogDimSearchStr: this.search, // 博客模糊查询所需数据
+                        blogDateStart:this.value[0], //按照时间区间筛选，开始日期
+                        blogDateEnd:this.value[1], //按照时间区间筛选，结束日期
                     }
                 }).then(resp => { // 这里使用箭头函数
                     this.blogs = resp.data.items;
                     this.totalSize = resp.data.total;
                     //完成赋值后，把加载状态赋值为false
                     this.loading = false;
-                })
+                }).catch(error => {
+                        this.blogs= [],
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message,
+                        })
+                    }
+                );
             },
             //获得排序信息
             sortBlog(val) {
