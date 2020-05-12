@@ -119,18 +119,24 @@
             doLogin() {
                 //进行表单验证
                 this.$refs.form.validate();
-                this.$router.push("/navBar")
                 //调用后台接口，如果登录成功，进行router跳转
-                this.$http({
-                    method: 'GET',
-                    url: '/user/all',
-                }).then(res => {
-                    console.log(res)
-                    if (res) {
-                        //跳转到首页
-                        this.$router.push("/navBar")
+                this.$http.get("/user/login", {
+                    params: {
+                        account: this.username,
+                        password: this.password,
                     }
-                }).catch({});
+                }).then(resp => { // 这里使用箭头函数
+                    if (resp) {
+                        //跳转到首页
+                        this.$router.push("/home")
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: "账号或密码错误，请重新登录",
+                            type: 'error'
+                        });
+                    }
+                })
             },
             //图片验证规则校验
             codeRules(value) {
@@ -158,7 +164,6 @@
                         this.randomNum(0, this.identifyCodes.length)
                         ];
                 }
-                console.log(this.identifyCode);
             }
         },
         mounted() {

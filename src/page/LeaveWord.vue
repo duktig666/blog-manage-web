@@ -122,7 +122,6 @@
                     }
                 }).then(resp => { // 这里使用箭头函数
                     this.leaveWords = resp.data.items;
-                    console.log(this.leaveWords)
                     this.totalSize = resp.data.total;
                 })
             },
@@ -159,7 +158,7 @@
                     //点击确定按钮
                     //执行删除博客的方法
                     this.$http.delete("/leave-word/" + row.leaveWord.id
-                    ).then(resp => {
+                    ).then(() => {
                         // 查询数据
                         this.getLeaveWordData();
                         //回显消息
@@ -167,7 +166,6 @@
                             type: 'success',
                             message: '删除成功!'
                         });
-                        console.log(resp)
                     }).catch(error => {
                             this.$message({
                                 type: 'error',
@@ -191,7 +189,6 @@
                     leaveWordIds.push(leaveWord.leaveWord.id);
                     }
                 );
-                console.log(leaveWordIds)
                 if (leaveWordIds.length !== 0) {
                     //点击确定按钮
                     //执行删除博客的方法
@@ -209,7 +206,7 @@
                             headers:{
                                 'Content-Type':'application/json;charset=UTF-8',
                             }
-                        }).then(resp => {
+                        }).then(() => {
                             // 查询数据
                             this.getLeaveWordData();
                             //回显消息
@@ -217,9 +214,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                            console.log(resp)
                         }).catch(error => {
-                                console.log(error);
                                 this.$message({
                                     type: 'error',
                                     message: error.response.data.message,
@@ -258,7 +253,7 @@
                             id: row.leaveWord.id,
                             replyContent: value
                         })
-                    }).then(resp => {
+                    }).then(() => {
                         // 查询数据
                         this.getLeaveWordData();
                         //回显消息
@@ -266,7 +261,6 @@
                             type: 'success',
                             message: '修改留言成功',
                         });
-                        console.log(resp)
                     }).catch(error => {
                             this.$message({
                                 type: 'error',

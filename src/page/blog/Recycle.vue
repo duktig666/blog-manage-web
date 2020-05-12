@@ -19,7 +19,6 @@
             getBlogById() {
                 this.$http.get("/blog/26"
                 ).then(data => { // 这里使用箭头函数
-                    console.log(data);
                     this.blogContentHtml = data.data.blog.contentHtml;
                 })
             }

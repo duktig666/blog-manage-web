@@ -146,7 +146,7 @@
                     this.$http.post("/blog-type", this.$qs.stringify({
                             type: value
                         })
-                    ).then(resp => {
+                    ).then(() => {
                         // 查询数据
                         this.getTypesData();
                         //回显消息
@@ -154,9 +154,7 @@
                             type: 'success',
                             message: '新增博客类型成功，博客类型: ' + value
                         });
-                        console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,
@@ -181,7 +179,7 @@
                     //点击确定按钮
                     //执行删除博客的方法
                     this.$http.delete("/blog-type/" + row.id
-                    ).then(resp => {
+                    ).then(() => {
                         // 查询数据
                         this.getTypesData();
                         //回显消息
@@ -189,9 +187,7 @@
                             type: 'success',
                             message: '删除成功!'
                         });
-                        console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,
@@ -231,7 +227,7 @@
                             headers:{
                                 'Content-Type':'application/json;charset=UTF-8',
                             }
-                        }).then(resp => {
+                        }).then(() => {
                             // 查询数据
                             this.getTypesData();
                             //回显消息
@@ -239,9 +235,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                            console.log(resp)
                         }).catch(error => {
-                                console.log(error.response);
                                 this.$message({
                                     type: 'error',
                                     message: error.response.data.message,
@@ -288,9 +282,7 @@
                             type: 'success',
                             message: '修改博客类型成功，博客类型: ' + value
                         });
-                        console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,

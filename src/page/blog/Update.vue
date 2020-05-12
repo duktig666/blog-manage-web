@@ -116,7 +116,6 @@
             getBlog() {
                 this.$http.get("/blog/" + this.blog.updateBlogId
                 ).then(data => { // 这里使用箭头函数
-                    console.log(data);
                     this.blog.blogTitle = data.data.blog.title;
                     this.blog.blogSummary = data.data.blog.summary;
                     this.blog.blogMarkDownContent = data.data.blog.content;
@@ -147,7 +146,7 @@
                             },
                             blogLabelIds: this.blog.blogLabelIds,
                         },
-                    }).then(resp => {
+                    }).then(() => {
                         //回显消息
                         this.$message({
                             type: 'success',
@@ -156,9 +155,7 @@
                         //关闭对话框
                         this.dialogSaveBlog = false;
                         this.back();
-                        console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,

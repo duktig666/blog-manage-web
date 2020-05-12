@@ -124,7 +124,7 @@
                             },
                             blogLabelIds: this.blogLabelIds,
                         },
-                    }).then(resp => {
+                    }).then(() => {
                         //关闭对话框
                         this.dialogSaveBlog = false;
                         //回显消息
@@ -134,9 +134,7 @@
                         });
                         //清空所输入的内容
                         this.clear();
-                        console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,

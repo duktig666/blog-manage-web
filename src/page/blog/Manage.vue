@@ -183,7 +183,6 @@
                         blogDimSearchStr: this.search, // 博客模糊查询所需数据
                     }
                 }).then(resp => { // 这里使用箭头函数
-                    console.log(resp);
                     this.blogs = resp.data.items;
                     this.totalSize = resp.data.total;
                     //完成赋值后，把加载状态赋值为false
@@ -240,17 +239,15 @@
                     //点击确定按钮
                     //执行删除博客的方法
                     this.$http.delete("/blog/" + row.blog.id
-                    ).then(resp => {
+                    ).then(
                         // 查询数据
-                        this.getBlogsData();
+                        this.getBlogsData(),
                         //回显消息
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
-                        })
-                        console.log(resp)
-                    }).catch(error => {
-                        console.log(error.response);
+                        }),
+                    ).catch(error => {
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,
@@ -291,7 +288,7 @@
                             headers:{
                                 'Content-Type':'application/json;charset=UTF-8',
                             }
-                        }).then(resp => {
+                        }).then(() => {
                             // 查询数据
                             this.getBlogsData();
                             //回显消息
@@ -299,9 +296,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                            console.log(resp)
                         }).catch(error => {
-                                console.log(error.response);
                                 this.$message({
                                     type: 'error',
                                     message: error.response.data.message,
@@ -336,7 +331,6 @@
                 // 发起请求
                 this.$http.get("/observe/" + row.blog.id
                 ).then(resp => { // 这里使用箭头函数
-                    console.log(resp);
                     this.observe = resp.data;
                     this.totalSize = resp.data.size;
                     //完成赋值后，把加载状态赋值为false

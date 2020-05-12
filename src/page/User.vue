@@ -141,7 +141,6 @@
                         sort: this.pageInfo.sort,// 排序字段
                     }
                 }).then(resp => { // 这里使用箭头函数
-                    console.log(resp);
                     this.users = resp.data.items;
                     this.totalSize = resp.data.total;
                     //完成赋值后，把加载状态赋值为false
@@ -186,7 +185,6 @@
 
             //删除一篇博客
             deleteUserById(row) {
-                console.log(row)
                 this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -196,7 +194,7 @@
                     //点击确定按钮
                     //执行删除博客的方法
                     this.$http.delete("/user/" + row.id
-                    ).then(resp => {
+                    ).then(() => {
                         // 查询数据
                         this.getUsersData();
                         //回显消息
@@ -204,9 +202,7 @@
                             type: 'success',
                             message: '删除成功!'
                         })
-                        console.log(resp)
                     }).catch(error => {
-                            console.log(error.response);
                             this.$message({
                                 type: 'error',
                                 message: error.response.data.message,
