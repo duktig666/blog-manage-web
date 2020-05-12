@@ -274,7 +274,7 @@
                             id: row.id,
                             type: value
                         })
-                    }).then(resp => {
+                    }).then(() => {
                         // 查询数据
                         this.getTypesData();
                         //回显消息
