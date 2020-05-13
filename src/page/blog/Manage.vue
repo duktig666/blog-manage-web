@@ -34,6 +34,8 @@
                     @sort-change="sortBlog"
                     @expand-change="expandSelect"
                     @selection-change="handleSelectionChange"
+                    :row-key='getRowKeys'
+                    :expand-row-keys="expands"
             >
                 <el-table-column
                         align="center"
@@ -89,12 +91,12 @@
                                 default-expand-all
                                 :tree-props="{children: 'nextNodes', hasChildren: 'hasChildren'}">
                             >
-                            <el-table-column
-                                    align="center"
-                                    label="级别"
-                                    min-width="120">
-                                <template slot-scope="scope"  >{{ scope.row.lastId }}级评论</template>
-                            </el-table-column>
+<!--                            <el-table-column-->
+<!--                                    align="center"-->
+<!--                                    label="级别"-->
+<!--                                    min-width="120">-->
+<!--                                <template slot-scope="scope"  >{{ scope.row.lastId }}级评论</template>-->
+<!--                            </el-table-column>-->
                             <el-table-column
                                     align="center"
                                     label="评论者"
@@ -103,17 +105,16 @@
                             </el-table-column>
                             <el-table-column
                                     align="center"
-                                    label="发布日期"
-                                    min-width="120"
-                            >
-                                <template slot-scope="scope">{{ scope.row.createDate }}</template>
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
                                     label="评论"
                                     min-width="120"
                             >
                                 <template slot-scope="scope">{{ scope.row.observeContent }}</template>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    label="评论日期"
+                                    min-width="120">
+                                <template slot-scope="scope">{{ scope.row.createDate }}</template>
                             </el-table-column>
                         </el-table>
                     </template>
@@ -197,7 +198,11 @@
                         }
                     }]
                 },
-                value: '' // 选取的时间区间
+                value: '' ,// 选取的时间区间
+                expands: [], //只展开一行放入当前行id
+                getRowKeys (row) { //设置row-key只展示一行
+                    return row.blog.id
+                },
             }
         },
         mounted() { // 渲染后执行
@@ -381,7 +386,18 @@
                     }
                 });
             },
-            expandSelect(row) {
+            // 展开行变化时触发
+            expandSelect(row,expandedRows) {
+                this.observe = [];
+                //只展开一行
+                if (expandedRows.length) {//说明展开了
+                    this.expands = [];
+                    if (row) {
+                        this.expands.push(row.blog.id);//只展开当前行id
+                    }
+                } else {//说明收起了
+                    this.expands = [];
+                }
                 // 发起请求
                 this.$http.get("/observe/" + row.blog.id
                 ).then(resp => { // 这里使用箭头函数
