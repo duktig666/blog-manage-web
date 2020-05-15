@@ -14,7 +14,7 @@ module.exports = {
     port: 8089,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8090',//后台接口
+        target: 'http://118.89.143.27:8090',//后台接口
         ws: true, //如果要代理websockets
         secure:false, // 使用的是http协议则设置为false，https协议则设置为true
         changeOrigin: true, //将选项changeOrigin设置true为基于名称的虚拟托管站点。
