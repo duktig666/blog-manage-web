@@ -180,6 +180,27 @@
             //markdown的图片删除
             $imgDel(pos) {
                 delete this.imgFile[pos];
+                /*获取图片回显的携带组信息的路劲，用来删除上传到服务器中的图片
+                  形如http://118.89.143.27:8888/group1/M00/00/00/rBEACF66ByCAJoL9AAjOQvwcHRA365.png
+                  截取为 group1/M00/00/00/rBEACF66ByCAJoL9AAjOQvwcHRA365.png*/
+                let filePath = pos[0].substring(26);
+                this.$http.delete("/file/" ,{
+                    params: {
+                        filePath:filePath,
+                    }
+                }).then(() => {
+                    //回显消息
+                    this.$message({
+                        type: 'success',
+                        message: '清除图片成功'
+                    });
+                }).catch(error => {
+                        this.$message({
+                            type: 'error',
+                            message: error.response.data.message,
+                        })
+                    }
+                );
             },
             //发布博客成功，清空所有输入框的值为空
             clear() {
