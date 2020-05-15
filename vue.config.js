@@ -6,7 +6,6 @@ module.exports = {
   ],
   publicPath: '/',  //vue3 解决部署到服务器白屏问题  '/'  =>  ''
   outputDir:'dist',
-  lineOnSave:process.env.NODE_ENV==='development',
   devServer: {
     // 项目运行时候的端口号
     host: "118.89.143.27",
