@@ -1,4 +1,3 @@
-const ipFile = require('./src/ip');
 
 module.exports = {
   "transpileDependencies": [
