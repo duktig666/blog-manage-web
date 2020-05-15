@@ -4,7 +4,7 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  publicPath: '/',  //vue3 解决部署到服务器白屏问题  '/'  =>  ''
+  publicPath: './',  //vue3 解决部署到服务器白屏问题  '/'  =>  ''
   outputDir:'dist',
   devServer: {
     // 项目运行时候的端口号
