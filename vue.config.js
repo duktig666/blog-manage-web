@@ -7,7 +7,7 @@ module.exports = {
   outputDir:'dist',
   devServer: {
     // 项目运行时候的端口号
-    host: "118.89.143.27",
+    host: "127.0.0.1",
     port: 8089,
     // proxy: {
     //   '/api': {
