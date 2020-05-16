@@ -13,9 +13,10 @@ import 'mavon-editor/dist/css/index.css'
 
 Vue.config.productionTip = false;
 Vue.withCredentials=true;
+
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
-axios.defaults.baseURL = '/api';
+axios.defaults.baseURL = 'http://118.89.143.27:8090/api';
 
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
