@@ -23,7 +23,7 @@ export default new Router({
         {
             path:"/", // 根路径，路由到 navBar组件
             component: () => import('../page/NavBar'),
-            redirect:"/home",
+            redirect:"/login",
             children:[ // 其它所有组件都是 navBar组件
                 route("/home","/Home","Home"),
                 route("/blog/manage","/blog/Manage","Manage"),
